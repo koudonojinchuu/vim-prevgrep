@@ -1,0 +1,6 @@
+
+" Here, replace by your own mapleader if it is different
+let mapleader = ","
+
+" You need to put the executable "vc" in a findable location (thus, in your path)
+nnoremap <leader>g :execute '/'.systemlist('vc')[0]

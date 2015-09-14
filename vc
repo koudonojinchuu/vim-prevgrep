@@ -1,0 +1,27 @@
+#!/bin/bash
+
+# VIM on a previously grep-selected file, with the corresponding searched word selected
+
+# enable history (disabled by default bash in non-interactive shells)
+HISTFILE=~/.bash_history
+set -o history
+
+# disable wildcard expansion
+set -f
+
+# search last grep command in the history
+
+last_grep="$(history | perl -ne 's/^\S+ +// ; (/^e?grep/ && ! /e?grep e?grep/) && print' | tail -n1)"
+args=$(echo "$last_grep" | perl -pe 's/^e?grep +//')
+
+# put the args read from history into args of *this* script, to use parse facility
+eval set -- $args
+
+# take the first argument that is not an option
+for i in "$@"
+do
+[[ ! -z "${result+x}" ]] && break
+! [[ "$i" =~ /^-/ ]] && result="$i"
+done
+
+echo "$result"
